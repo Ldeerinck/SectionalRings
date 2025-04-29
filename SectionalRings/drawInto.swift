@@ -19,6 +19,9 @@ func drawInto(image:UIImage) -> UIImage {
     image.draw(at: CGPoint.zero) //Copy the sectional onto the new image
     let context = UIGraphicsGetCurrentContext()!
     
+//    let z0 = getRing(height: 5000, landable: landables[5], ringSegment: 0, rings: RingColors())
+//    let z1 = getRing(height: 5000, landable: landables[5], ringSegment: 1, rings: RingColors())
+
     //Not needed with all gradients
     context.setLineWidth(2.0)
     context.setStrokeColor(UIColor.red.cgColor)
