@@ -75,36 +75,47 @@ func drawInto(image:UIImage) -> UIImage {
     return myImage!
 }
 
-func getRadius()-> Double {
-    return 50
-}
-
-
 func drawRings(image:UIImage) -> UIImage {
     
     UIGraphicsBeginImageContext(image.size)
     
-    let maskPath = UIGraphicsGetCurrentContext()!
-    
-    image.draw(at: CGPoint.zero) //Copy the secional onto the new image
+    image.draw(at: CGPoint.zero) //Copy the sectional onto the new image
     let context = UIGraphicsGetCurrentContext()!
     let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
-    context.setLineWidth(5.0)
-    context.setFillColor(UIColor.green.cgColor)
+    let colors = RingColors()
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)
+    //settings for gradient is not used
+    context.setLineWidth(2.0)
     context.setStrokeColor(UIColor.red.cgColor)
-    context.setAlpha(0.5)
+    context.setLineWidth(5.0)
     
-    for item in landables {
-        var point = inches2xy(left: item.tiffX, top: item.tiffY, size: image.size)
-        point.x-=getRadius()
-        point.y-=getRadius()
-        context.addEllipse(in: CGRect(origin: point, size: CGSize(width: getRadius()*2, height: getRadius()*2)))
-        context.drawPath(using: .fillStroke)
-        maskPath.addEllipse(in: CGRect(origin: point, size: CGSize(width: getRadius()*2, height: getRadius()*2)))
-        maskPath.closePath()
-        maskPath.addRect(rect)
-        context.clip(using: CGPathFillRule.evenOdd)
-        
+    
+    for ringIndex in 0...4{
+        for item in landables {
+            let point = inches2xy(left: item.tiffX, top: item.tiffY, size: image.size)
+            let ring = getRing(height: 5000, landable: item, ringSegment: ringIndex, rings: colors)
+            let circle = CGRect(origin: CGPoint(x: point.x - ring.outsideRadius, y: point.y - ring.outsideRadius), size: CGSize(width: ring.outsideRadius*2, height:ring.outsideRadius*2))
+            if(ring.gradient){
+                context.saveGState()
+                let mygrad:CGGradient = CGGradient(colorsSpace: colorSpace!, colors: [ring.insideColor.cgColor, ring.outsideColor.cgColor] as CFArray, locations: [0.0, 1.0])! //(between: color1, and: color2)
+                context.addEllipse(in: circle )
+                context.clip(using: CGPathFillRule.evenOdd)
+                context.drawRadialGradient(mygrad, startCenter: point, startRadius:    ring.insideRadius, endCenter: point, endRadius: ring.outsideRadius, options: [.drawsAfterEndLocation])
+                context.restoreGState()
+                context.addEllipse(in: circle ) //This adds circle to the mask
+                context.addRect(rect)
+                context.clip(using: CGPathFillRule.evenOdd)
+            }
+            else {
+                context.setFillColor(ring.insideColor.cgColor)
+                context.addEllipse(in: circle )
+                context.drawPath(using: .fill)
+                context.addEllipse(in: circle) //This adds circle to the mask
+                context.addRect(rect)
+                context.clip(using: CGPathFillRule.evenOdd)
+            }
+                                               
+        }
     }
     let myImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
