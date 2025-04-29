@@ -18,8 +18,8 @@ func getRing(height: Double, landable:Landable, ringSegment:Int, rings:RingColor
     let insideRadius:Double = (height - (Double(landable.elev) + rings.patternAltitude)) * insideFeetPerNM * rings.pixelsPerNM
     let outsideRadius:Double = (height - (Double(landable.elev) + rings.patternAltitude)) * outsideFeetPerNM * rings.pixelsPerNM
     if ringSegment%2 == 0 {
-        return (insideColor: rings.colors[base*2], outsideColor: rings.colors[base*2], insideRadius:insideRadius, outsideRadius:outsideRadius, gradient:false)
+        return (insideColor: rings.colors[base], outsideColor: rings.colors[base], insideRadius:insideRadius, outsideRadius:outsideRadius, gradient:false)
     } else {
-        return (insideColor: rings.colors[base*2], outsideColor: rings.colors[base*2+1], insideRadius:insideRadius, outsideRadius:outsideRadius, gradient:true)
+        return (insideColor: rings.colors[base], outsideColor: rings.colors[base+1], insideRadius:insideRadius, outsideRadius:outsideRadius, gradient:true)
     }
 }
