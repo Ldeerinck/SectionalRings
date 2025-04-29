@@ -20,7 +20,7 @@ func inches2xy(left: Double, top:Double, size:CGSize) -> CGPoint {
     
 }
 
-func lambertConformalConic(lat: Double, lon: Double, testing:Bool = false) -> (x: Double, y: Double) {
+func lambertConformalConicAttempt(lat: Double, lon: Double, testing:Bool = false) -> (x: Double, y: Double) {
     
     let φ:Double = Angle(degrees: lat).radians // Convert decimal degrees into radians
     let λ:Double = Angle(degrees: lon).radians
@@ -69,7 +69,7 @@ func lambertConformalConic(lat: Double, lon: Double, testing:Bool = false) -> (x
     
     //r = 37565039.86
     //rF = 37807441.20
-    r *= 3.280833  //Why does this fix it?
+    r *= 3.280833  //Why does this fix it?  This is feet per meter!
     rF *= 3.280833  //Why does this fix it?
     
     let θ:Double = n * (λ - λF)
@@ -167,3 +167,79 @@ func lambertConformalConic(lat: Double, lon: Double, testing:Bool = false) -> (x
     Wrong        Then Easting E = 2963503.91 US survey feet  //when i force r and rF, this stays wrong
     Wrong        Northing N = 254759.80 US survey feet  //when I force r and rF, this becomes correct.
 */
+
+import Foundation
+import CoreLocation
+
+struct LCCParameters {
+    
+    let lat0: Double = Angle(degrees: 34.16666666666666).radians          // Latitude of origin (φ0)
+    let lon0: Double = Angle(degrees:-118.4666666666667).radians          // Central meridian (λ0)
+    let lat1: Double = Angle(degrees: 38.66666666666666).radians          // First standard parallel (φ1)
+    let lat2: Double = Angle(degrees: 33.33333333333334).radians          // Second standard parallel (φ2)
+    let falseEasting: Double = 0.0
+    let falseNorthing: Double = 0.0
+    let radius: Double = 6371000   // Earth radius in meters (mean value ≈ 6371000)
+}
+
+func lambertConformalConic(lat: Double, lon: Double, params: LCCParameters) -> (x: Double, y: Double) {
+    // Convert degrees to radians
+    func deg2rad(_ degrees: Double) -> Double {
+        return degrees * .pi / 180
+    }
+
+    let φ = deg2rad(lat)
+    let λ = deg2rad(lon)
+    let φ0 = deg2rad(params.lat0)
+    let λ0 = deg2rad(params.lon0)
+    let φ1 = deg2rad(params.lat1)
+    let φ2 = deg2rad(params.lat2)
+
+    // Calculate n
+    let n = log(cos(φ1) / cos(φ2)) / log(tan(.pi / 4 + φ2 / 2) / tan(.pi / 4 + φ1 / 2))
+
+    // Calculate F
+    let F = (cos(φ1) * pow(tan(.pi / 4 + φ1 / 2), n)) / n
+
+    // Calculate ρ
+    let ρ = params.radius * F / pow(tan(.pi / 4 + φ / 2), n)
+    let ρ0 = params.radius * F / pow(tan(.pi / 4 + φ0 / 2), n)
+
+    // Calculate X and Y
+    let x = ρ * sin(n * (λ - λ0)) + params.falseEasting
+    let y = ρ0 - ρ * cos(n * (λ - λ0)) + params.falseNorthing
+    
+    if true {
+        print("---------------------")
+        //print(" Ellipsoid a = ", a)
+        //print("Ellipsoid e = ", e)
+        print("Latitude of false origin = ", params.lat0)
+        print("Longitude of false origin = ", params.lon0)
+        print("Latitude of 1st standard parallel = ", φ1)
+        print("Latitude of 2nd standard parallel = ", φ2)
+        print("Easting of False Origin = ", params.falseEasting, " or ", params.falseEasting * 3.280833333, " US survey feet")
+        print("Northing at false origin = ", params.falseNorthing, " or ", params.falseNorthing * 3.280833333, " US survey feet")
+        
+        print("Latitude = ", φ)
+        print("Longitude = ", λ)
+
+        //print("m1 = ", m1)
+        //print("m2 = ", m2)
+        //print("t = ", t)
+        //print("tF = ", tF)
+        //print("t1 = ", t1)
+        //print("t2 = ", t2)
+        print(" n = ", n)
+        print(" F = ", F)
+        print("r = ", params.radius)
+        //print("rF = ", rF)
+        //print("θ = ", θ)
+        print("ρ = ", ρ)
+        print("ρ0 = ", ρ0)
+        //print("Easting = ", E, " or ", E/3.2808333333, " US survey feet")
+        //print("Northing = ", N, " or ", N/3.2808333333, "US survey feet")
+        print("x(0-16645) = ", x, " y(0-12349) = ", y)
+    }
+
+    return (x, y)
+}

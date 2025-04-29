@@ -19,9 +19,11 @@ struct ContentView: View {
         VStack {
             VStack {
                 HStack {
-                    //                Button("Test") {
-                    //                    let _ = lambertConformalConic(lat: 28.5, lon: -96.0, testing: true)
-                    //                }
+                    Button("Test") {
+                        let p = LCCParameters()
+                        let po = lambertConformalConic(lat: 28.5, lon: -96.0, params: p)
+                        let x = po
+                    }
                     Button("Center") {
                         let spot = middle
                         let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2, y:spot.y - (UIScreen.main.bounds.height - 200) / 2, width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.height - 200)
