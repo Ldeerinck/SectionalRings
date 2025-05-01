@@ -24,6 +24,8 @@ struct ContentView: View {
                         let scaler:Double = 25.0
                         let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0 * scaler, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0 * scaler), width: UIScreen.main.bounds.width * scaler , height: UIScreen.main.bounds.height * scaler - 200.00)
                         let finishedImage = drawRings(image: i)
+                        //add overlay(s)
+                        //save file
                         si = UIImage(cgImage: finishedImage.cgImage!.cropping(to:img)!)
                     }
             }

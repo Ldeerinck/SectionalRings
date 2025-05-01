@@ -53,8 +53,6 @@ func drawRings(image:UIImage) -> UIImage {
     }
     let myImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
-    //add on overlays
-    //then save it (or print it)
     return myImage!
 }
 
