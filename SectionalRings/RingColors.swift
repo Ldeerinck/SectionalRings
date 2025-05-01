@@ -29,3 +29,8 @@ func displayInfo(ring:RingColors) -> String {
     return str
 }
 
+func fileName(ring:RingColors) -> String {
+    var str = "Los_Angeles SEC \(Double(Int(10.0 * ring.lOverD)) / 10):1 \(Int(ring.elevation))'"
+
+    return str
+}
