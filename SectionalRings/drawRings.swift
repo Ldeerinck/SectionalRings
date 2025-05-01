@@ -12,9 +12,9 @@ func drawRings(image:UIImage) -> UIImage {
     
     UIGraphicsBeginImageContext(image.size)
     
-    image.draw(at: CGPoint.zero) //Copy the sectional onto the new image
+    image.draw(at: CGPoint.zero) //draw image into context
     let context = UIGraphicsGetCurrentContext()!
-    let rect:CGRect = CGRect(x: 1651.31, y: 1340.91, width: 14981.69, height: 10750.0) //CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
+    let rect:CGRect = CGRect(x: 1651.31, y: 1340.91, width: 14981.69, height: 10750.0)
     let colors = RingColors()
     let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)
     //settings for gradient is not used
