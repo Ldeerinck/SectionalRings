@@ -16,6 +16,16 @@ struct RingColors {
     // rings 0, 2, 4 are solid, and rings 1 and 3 are gradients.
     var lOverD:Double = 50.0
     var patternAltitude:Double = 1000.0
-    var pixelsPerNM = 435.0 // True for LA Sectional at least
+    var pixelsPerNM:Double = 43.5 // True for LA Sectional at least
+    var elevation:Double = 4000.0
+}
+
+func displayInfo(ring:RingColors) -> String {
+    var str = "L/D : \(ring.lOverD)\n"
+    str += "Pattern Altitude: \(ring.patternAltitude)\n"
+    str += "Elevation: \(ring.elevation)\n"
+    str += "Safety % : >\(ring.safety[1]*100), \(ring.safety[2]*100)%-\(ring.safety[3]*100)%, \(ring.safety[4]*100)%-\(ring.safety[5]*100)%\n"
+    
+    return str
 }
 

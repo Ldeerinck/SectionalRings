@@ -21,22 +21,11 @@ func drawInto(image:UIImage) -> UIImage {
     
 //    let z0 = getRing(height: 5000, landable: landables[5], ringSegment: 0, rings: RingColors())
 //    let z1 = getRing(height: 5000, landable: landables[5], ringSegment: 1, rings: RingColors())
-
-    //Not needed with all gradients
-    context.setLineWidth(2.0)
-    context.setStrokeColor(UIColor.red.cgColor)
-    context.setLineWidth(5.0)
-    
+   
     let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
     let circle1 = CGRect(origin: CGPoint(x: 16645.0 / 2 - 150, y: 12349.0 / 2 - 150), size: CGSize(width: 300, height:300))
     let circle2 = CGRect(origin: CGPoint(x: 16645.0 / 2 - 200, y: 12349.0 / 2), size: CGSize(width: 200, height:200))
     let circle3 = CGRect(origin: CGPoint(x: 16645.0 / 2 - 100, y: 12349.0 / 2 + 100), size: CGSize(width: 200, height:200))
-    
-//    //Solid circle
-//    context.setFillColor(UIColor.green.cgColor)
-//    context.setAlpha(0.25)
-//    context.addEllipse(in: circle1)
-//    context.drawPath(using: .fillStroke)
     
     let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)
     let color1 = UIColor.green.withAlphaComponent(0.3)
@@ -89,11 +78,12 @@ func drawRings(image:UIImage) -> UIImage {
     context.setStrokeColor(UIColor.red.cgColor)
     context.setLineWidth(5.0)
     
+    print(displayInfo(ring:RingColors()))
     
     for ringIndex in 0...4{
         for item in landables {
             let point = inches2xy(left: item.tiffX, top: item.tiffY, size: image.size)
-            let ring = getRing(height: 5000, landable: item, ringSegment: ringIndex, rings: colors)
+            let ring = getRing(landable: item, ringSegment: ringIndex, rings: colors)
             let circle = CGRect(origin: CGPoint(x: point.x - ring.outsideRadius, y: point.y - ring.outsideRadius), size: CGSize(width: ring.outsideRadius*2, height:ring.outsideRadius*2))
             if(ring.gradient){
                 context.saveGState()

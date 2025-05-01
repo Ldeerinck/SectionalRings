@@ -8,18 +8,6 @@
 import Foundation
 import SwiftUICore
 
-func inches2xy(left: Double, top:Double, size:CGSize) -> CGPoint {
-    
-    let width:Double = 55.54
-    let height:Double = 41.35
-
-    let x = (left / width) * size.width
-    let y = (top / height) * size.height
-    let spot:CGPoint = CGPoint(x:x, y:y)
-    return spot
-    
-}
-
 func lambertConformalConicAttempt(lat: Double, lon: Double, testing:Bool = false) -> (x: Double, y: Double) {
     
     let φ:Double = Angle(degrees: lat).radians // Convert decimal degrees into radians
