@@ -24,7 +24,7 @@ func getRing(landable:Landable, ringSegment:Int, rings:RingColors) -> (insideCol
         let insideFeetPerNM:Double = (6000 / rings.lOverD) / (1.0 - rings.safety[ringSegment])
         insideRadius = (rings.elevation - (Double(landable.elev) + rings.patternAltitude)) / insideFeetPerNM * rings.pixelsPerNM
     }
-    print(landable.name, ringSegment, toSpare, outsideFeetPerNM, outsideRadius / rings.pixelsPerNM, outsideRadius)
+    //print(landable.name, ringSegment, toSpare, outsideFeetPerNM, outsideRadius / rings.pixelsPerNM, outsideRadius)
     if ringSegment%2 == 0 {
         return (insideColor: rings.colors[baseColor], outsideColor: rings.colors[baseColor], insideRadius:insideRadius, outsideRadius:outsideRadius, gradient:false)
     } else {

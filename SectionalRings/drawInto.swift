@@ -70,7 +70,7 @@ func drawRings(image:UIImage) -> UIImage {
     
     image.draw(at: CGPoint.zero) //Copy the sectional onto the new image
     let context = UIGraphicsGetCurrentContext()!
-    let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
+    let rect:CGRect = CGRect(x: 1651.31, y: 1340.91, width: 14981.69, height: 10750.0) //CGRect(origin: CGPoint(x: 0, y: 0), size: image.size)
     let colors = RingColors()
     let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)
     //settings for gradient is not used
@@ -80,7 +80,7 @@ func drawRings(image:UIImage) -> UIImage {
     
     print(displayInfo(ring:RingColors()))
     
-    for ringIndex in 0...4{
+    for ringIndex in stride(from: 0, through: 4, by: 1) { // 0...4{
         for item in landables {
             let point = inches2xy(left: item.tiffX, top: item.tiffY, size: image.size)
             let ring = getRing(landable: item, ringSegment: ringIndex, rings: colors)

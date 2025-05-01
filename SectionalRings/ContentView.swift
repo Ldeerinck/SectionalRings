@@ -33,7 +33,7 @@ struct ContentView: View {
                     Button("Warner") {
                         let spot = inches2xy(left: 40.86, top:29.59, size: i.size)
                         // x was 41.02 (-0.16), y was 29.39 (+20)
-                        let scaler:Double = 10.0
+                        let scaler:Double = 25.0
                         let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0 * scaler, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0 * scaler), width: UIScreen.main.bounds.width * scaler , height: UIScreen.main.bounds.height * scaler - 200.00)
                         let finishedImage = drawRings(image: i)
                         si = UIImage(cgImage: finishedImage.cgImage!.cropping(to:img)!)
