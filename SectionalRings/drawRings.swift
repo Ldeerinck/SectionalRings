@@ -48,7 +48,7 @@ func drawRings(image:UIImage) -> UIImage {
                 context.addRect(rect)
                 context.clip(using: CGPathFillRule.evenOdd)
             }
-                                               
+            saveFile(image: UIGraphicsGetImageFromCurrentImageContext()!, suffix: "\(ringIndex)-\(item.id)")
         }
     }
     let myImage = UIGraphicsGetImageFromCurrentImageContext()

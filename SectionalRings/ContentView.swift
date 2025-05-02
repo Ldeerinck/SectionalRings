@@ -13,10 +13,9 @@ struct ContentView: View {
     let i: UIImage = UIImage(named: "Los Angeles SEC.tif")!
     let middle:CGPoint = CGPoint(x: 16645.0 / 2, y: 12349.0 / 2)
     @State var si: UIImage = UIImage()
-
-        var body: some View {
-        
-        VStack {
+    
+    var body: some View {
+            VStack {
                 HStack {
                     Button("Render") {
                         let spot = inches2xy(left: 40.86, top:29.59, size: i.size)
@@ -31,18 +30,18 @@ struct ContentView: View {
                         saveFile(image: overLayedImage)
                         si = UIImage(cgImage: overLayedImage.cgImage!.cropping(to:img)!)
                     }
+                }
+                ZStack {
+                    Image(uiImage:si).resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
+                    Rectangle().frame(maxWidth: 1)
+                    Rectangle().frame(maxHeight: 1)
+                }
             }
-            ZStack {
-                Image(uiImage:si).resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
-                Rectangle().frame(maxWidth: 1)
-                Rectangle().frame(maxHeight: 1)
-            }
+            .padding()
         }
-        .padding()
     }
-}
 
 #Preview {
     ContentView()

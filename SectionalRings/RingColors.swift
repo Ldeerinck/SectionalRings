@@ -17,7 +17,7 @@ struct RingColors {
     var lOverD:Double = 51.5
     var patternAltitude:Double = 1000.0
     var pixelsPerNM:Double = 43.5 // True for LA Sectional at least
-    var elevation:Double = 8000.0
+    var elevation:Double = 6000.0
 }
 
 func displayInfo(ring:RingColors) -> String {
