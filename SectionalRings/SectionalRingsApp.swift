@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct SectionalRingsApp: App {
+    @StateObject private var globalSettings = Globals()
+    @StateObject private var landables = Landables()
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environmentObject(globalSettings)
+                .environmentObject(landables)
         }
     }
 }

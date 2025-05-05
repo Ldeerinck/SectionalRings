@@ -8,7 +8,11 @@
 import SwiftUI
 import PDFKit
 
-struct ContentView: View {
+struct MapView: View {
+    
+    @EnvironmentObject var globalSettings: Globals
+    @EnvironmentObject var landables: Landables
+    
     let fromRect = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 200)
     let i: UIImage = UIImage(named: "Los Angeles SEC.tif")!
     let middle:CGPoint = CGPoint(x: 16645.0 / 2, y: 12349.0 / 2)
@@ -22,7 +26,7 @@ struct ContentView: View {
                         // x was 41.02 (-0.16), y was 29.39 (+20)
                         let scaler:Double = 25.0
                         let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0 * scaler, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0 * scaler), width: UIScreen.main.bounds.width * scaler , height: UIScreen.main.bounds.height * scaler - 200.00)
-                        let finishedImage = drawRings(image: i)
+                        let finishedImage = drawRings(image: i, globalSettings: globalSettings, landables: landables)
                         
                         //add overlay
                         let overLayedImage = overlayImage(image: finishedImage)
@@ -44,6 +48,8 @@ struct ContentView: View {
     }
 
 #Preview {
-    ContentView()
+    MapView()
+        .environmentObject(Globals())
+        .environmentObject(Landables())
 }
 

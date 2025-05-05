@@ -8,21 +8,36 @@
 import SwiftUI
 
 struct MainView: View {
+    
+    @EnvironmentObject var globalSettings: Globals
+    @EnvironmentObject var landables: Landables
+    
     var body: some View {
         TabView {
-            ContentView()
+            MapView()
                 .tabItem {
                     Image(systemName: "house")
-                    Text("Home")
+                    Text("Map")
                 }
+                .environmentObject(globalSettings)
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gearshape")
+                    Text("Settings")
+                }
+                .environmentObject(globalSettings)
             AirportView()
                 .tabItem {
                     Image(systemName: "airplane")
                     Text("Airports")
                 }
+                .environmentObject(landables)
         }
+        .environmentObject(Globals())
+        //.environmentObject(Landables())
     }
 }
+    
 
 #Preview {
     MainView()

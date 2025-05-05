@@ -28,10 +28,16 @@ func overlayImage(image: UIImage) -> UIImage{
         NSAttributedString.Key.backgroundColor:backgroundColor,
     ]
     // Create a rect where you want the text
-    let rect = CGRectMake(50, 50, image.size.width, image.size.height)
-
+    let rect = CGRectMake(50, 50, 4500, 1200)
+    
+    // First draw a white rectangle, so we don't see stuff between the line
+    let ctx = UIGraphicsGetCurrentContext()!
+    ctx.setFillColor(backgroundColor.cgColor)
+    ctx.addRect(rect)
+    ctx.drawPath(using: .fill)
+    
     // Draw the text into an image
-    let drawText: NSString = displayInfo(ring: RingColors()) as NSString
+    let drawText: NSString = displayInfo(ring: Globals()) as NSString
     drawText.draw(in: rect, withAttributes: textFontAttributes)
     
     // Create a new image out of the images we have created
