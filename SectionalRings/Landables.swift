@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-struct Landable: Hashable, Identifiable, Copyable, Escapable { //}: ObservableObject, Hashable, Equatable, Identifiable {
+class Landable: ObservableObject, Hashable, Identifiable, Copyable, Escapable {
     var id:UUID = UUID()
     var icao:String
     var name:String

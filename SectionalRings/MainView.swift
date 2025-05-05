@@ -26,7 +26,7 @@ struct MainView: View {
                     Text("Settings")
                 }
                 .environmentObject(globalSettings)
-            AirportView()
+            AirportListView()
                 .tabItem {
                     Image(systemName: "airplane")
                     Text("Airports")

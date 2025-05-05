@@ -2,62 +2,64 @@
 //  AirportView.swift
 //  SectionalRings
 //
-//  Created by Chuck Deerinck on 5/2/25.
+//  Created by Chuck Deerinck on 5/5/25.
 //
 
 import SwiftUI
 
 struct AirportView: View {
     
-    @EnvironmentObject var landables: Landables
+    @EnvironmentObject var landable: Landable
+    let secBit: UIImage = UIImage(named: "Sectional Bit.jpg")!
     
     var body: some View {
-        ScrollView {
-            Grid(alignment: .leading) {
-                GridRow {
-                    Text("ICAO").bold()
-                    Text("Name").bold()
-                    Text("Elev").bold()
-                    Text("Width").bold()
-                    Text("Length").bold()
-                    Text("Note").bold()
-                }
-                ForEach(landables.landables, id: \.self) { item in
-                    GridRow {
-                        //Toggle("", isOn: item.usable)
-                        Text(item.icao.description)
-                        Text(item.name)
-                        Text(item.elev.description)
-                        Text(item.width.description)
-                        Text(item.length.description)
-                        Text(item.note).lineLimit(nil)
-                    }
-                    Divider()
-                }
-            }
-            List {
-                ForEach(landables.landables, id: \.self) { item in
+        VStack {
+            HStack {
+                VStack {
                     HStack {
-                        //Toggle("", isOn: item.usable)
-                        Text(item.name)
-                        Text(item.note)
-                    }.border(Color.blue)
+                        LabeledContent {
+                            TextField("ICAO", text: $landable.icao)
+                        } label: { Text("ICAO").bold() }
+                            .frame(width:180)
+                        LabeledContent {
+                            TextField("Name", text: $landable.name)
+                        } label: { Text("Name").bold() }
+                            .frame(width:350)
+                        LabeledContent {
+                            TextField("Length", value: $landable.length, formatter: nfFeet)
+                        } label: { Text("Length").bold() }
+                            .frame(width:120)
+                    }
+                    HStack {
+                        LabeledContent {
+                            TextField("Elevation", value: $landable.elev, formatter: nfFeet)
+                        } label: { Text("Elevation").bold() }
+                            .frame(width:180)
+                        LabeledContent {
+                            TextField("Note", text: $landable.note)
+                        } label: { Text("Note").bold() }
+                            .frame(width:350)
+                        LabeledContent {
+                            TextField("Width", value: $landable.width, formatter: nfFeet)
+                        } label: { Text("Width").bold() }
+                            .frame(width:120)
+                    }
                 }
+                Toggle("Useable", isOn: landable.useable).frame(width: 150)
             }
-            .frame(height: CGFloat((landables.landables.count * 65) + (landables.landables.count < 4 ? 200 : 0)), alignment: .top)
-//            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 20) {
-//                ForEach(landables, id: \.self) { item in
-//                    HStack {
-//                        Text(item.name)
-//                        Text(item.note)
-//                    }
-//                }
-//            }
+        }
+        ZStack {
+            Image(uiImage:secBit).resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 600, height: 600)
+            Rectangle().frame(maxWidth: 1, maxHeight:650)
+            Rectangle().frame(maxWidth: 650, maxHeight: 1)
         }
     }
 }
 
 #Preview {
+    let warner = Landable("CL35","Warner Springs","Los-Angeles",33.2838889,116.667222,2880,35,70,40.86,29.59,41.02,29.39,"Gliderport.  Aerotows 7 days.",0.16,-0.20, true)
     AirportView()
-        .environmentObject(Landables())
+        .environmentObject(warner)
 }
