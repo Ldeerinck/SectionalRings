@@ -8,53 +8,69 @@
 import SwiftUI
 
 struct AirportListView: View {
-    
+
     @EnvironmentObject var landables: Landables
-    
+
     //Use NavigationLink to go to detail view
-    
+
     var body: some View {
-        ScrollView {
-            Grid(alignment: .leading) {
-                GridRow {
-                    Text("ICAO").bold()
-                    Text("Name").bold()
-                    Text("Elev").bold()
-                    Text("Width").bold()
-                    Text("Length").bold()
-                    Text("Note").bold()
-                }
-                ForEach(landables.landables, id: \.self) { item in
+        NavigationStack {
+            ScrollView {
+                Grid(alignment: .leading) {
                     GridRow {
-                        //Toggle("", isOn: item.usable)
-                        Text(item.icao.description)
-                        Text(item.name)
-                        Text(item.elev.description)
-                        Text(item.width.description)
-                        Text(item.length.description)
-                        Text(item.note).lineLimit(nil)
+                        Text("ICAO").bold()
+                        Text("Name").bold()
+                        Text("Elev").bold()
+                        Text("Width").bold()
+                        Text("Length").bold()
+                        Text("Note").bold()
                     }
-                    Divider()
+                    ForEach(landables.landables, id: \.self) { item in
+                        NavigationLink {
+
+                            AirportView()
+                                .environmentObject(item)
+                        } label: {
+
+                            GridRow {
+                                //Toggle("", isOn: item.usable)
+                                Text(item.icao.description)
+                                Text(item.name)
+                                Text(item.elev.description)
+                                Text(item.width.description)
+                                Text(item.length.description)
+                                Text(item.note).lineLimit(nil)
+                            }
+                        }
+                        Divider()
+
+                    }
                 }
-            }
-            List {
-                ForEach(landables.landables, id: \.self) { item in
-                    HStack {
-                        //Toggle("", isOn: item.usable)
-                        Text(item.name)
-                        Text(item.note)
-                    }.border(Color.blue)
+                List {
+                    ForEach(landables.landables, id: \.self) { item in
+                        HStack {
+                            //Toggle("", isOn: item.usable)
+                            Text(item.name)
+                            Text(item.note)
+                        }.border(Color.blue)
+                    }
                 }
+                .frame(
+                    height: CGFloat(
+                        (landables.landables.count * 65)
+                            + (landables.landables.count < 4 ? 200 : 0)
+                    ),
+                    alignment: .top
+                )
+                //            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 20) {
+                //                ForEach(landables, id: \.self) { item in
+                //                    HStack {
+                //                        Text(item.name)
+                //                        Text(item.note)
+                //                    }
+                //                }
+                //            }
             }
-            .frame(height: CGFloat((landables.landables.count * 65) + (landables.landables.count < 4 ? 200 : 0)), alignment: .top)
-//            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 20) {
-//                ForEach(landables, id: \.self) { item in
-//                    HStack {
-//                        Text(item.name)
-//                        Text(item.note)
-//                    }
-//                }
-//            }
         }
     }
 }
