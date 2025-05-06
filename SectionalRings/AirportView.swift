@@ -45,7 +45,7 @@ struct AirportView: View {
                             .frame(width:120)
                     }
                 }
-                Toggle("Useable", isOn: landable.useable).frame(width: 150)
+                Toggle("Useable", isOn: $landable.isUseable).frame(width: 150)
             }
         }
         ZStack {
