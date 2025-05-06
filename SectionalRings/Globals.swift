@@ -69,6 +69,6 @@ func displayInfo(ring:Globals) -> String {
 }
 
 func fileName(ring:Globals) -> String {
-    let str = "Los_Angeles SEC \(Double(Int(10.0 * ring.lOverD)) / 10):1 \(Int(ring.elevation))'"
+    let str = "Los_Angeles SEC \(Double(Int(10.0 * ring.lOverD)) / 10):1 \(Int(ring.elevation))"
     return str
 }

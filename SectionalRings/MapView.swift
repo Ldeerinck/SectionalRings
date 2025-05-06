@@ -36,11 +36,12 @@ struct MapView: View {
                     }
                 }
                 ZStack {
-                    Image(uiImage:si).resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
-                    Rectangle().frame(maxWidth: 1)
-                    Rectangle().frame(maxHeight: 1)
+                    ZoomableContainer {
+                        Image(uiImage:si).resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
+                    }
+                
                 }
             }
             .padding()

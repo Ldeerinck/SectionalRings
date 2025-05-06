@@ -18,58 +18,56 @@ struct AirportListView: View {
             ScrollView {
                 Grid(alignment: .leading) {
                     GridRow {
-                        Text("ICAO").bold()
-                        Text("Name").bold()
-                        Text("Elev").bold()
-                        Text("Width").bold()
-                        Text("Length").bold()
-                        Text("Note").bold()
+                        HStack {
+                                
+                            VStack {
+                                Text("ICAO").bold()
+                                Text("Elevation").bold()
+                            }
+                            .frame(width: 80)
+                            VStack{
+                                Text("Name").bold()
+                                Text("Note").bold()
+                            }
+                            .frame(width: 600)
+                            VStack {
+                                Text("Width").bold()
+                                Text("Length").bold()
+                            }
+                            .frame(width: 80)
+                        }
                     }
                     ForEach(landables.landables, id: \.self) { item in
                         NavigationLink {
-
                             AirportView()
                                 .environmentObject(item)
                         } label: {
 
                             GridRow {
                                 //Toggle("", isOn: item.usable)
-                                Text(item.icao.description)
-                                Text(item.name)
-                                Text(item.elev.description)
-                                Text(item.width.description)
-                                Text(item.length.description)
-                                Text(item.note).lineLimit(nil)
+                                HStack {
+                                    VStack {
+                                        Text(item.icao.description)
+                                        Text(item.elev.description)
+                                    }
+                                    .frame(width: 80)
+                                    VStack {
+                                        Text(item.name)
+                                        Text(item.note).lineLimit(nil)
+                                    }
+                                    .frame(width: 600)
+                                    VStack {
+                                        Text(item.width.description)
+                                        Text(item.length.description)
+                                    }
+                                    .frame(width: 80)
+                                }
                             }
                         }
                         Divider()
 
                     }
                 }
-                List {
-                    ForEach(landables.landables, id: \.self) { item in
-                        HStack {
-                            //Toggle("", isOn: item.usable)
-                            Text(item.name)
-                            Text(item.note)
-                        }.border(Color.blue)
-                    }
-                }
-                .frame(
-                    height: CGFloat(
-                        (landables.landables.count * 65)
-                            + (landables.landables.count < 4 ? 200 : 0)
-                    ),
-                    alignment: .top
-                )
-                //            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 20) {
-                //                ForEach(landables, id: \.self) { item in
-                //                    HStack {
-                //                        Text(item.name)
-                //                        Text(item.note)
-                //                    }
-                //                }
-                //            }
             }
         }
     }
