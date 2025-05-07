@@ -10,6 +10,7 @@ import SwiftUI
 struct AirportView: View {
     
     @EnvironmentObject var landable: Landable
+    
     let secBit: UIImage = UIImage(named: "Sectional Bit.jpg")!
     
     var body: some View {
@@ -45,7 +46,7 @@ struct AirportView: View {
                             .frame(width:120)
                     }
                 }
-                Toggle("Useable", isOn: $landable.isUseable).frame(width: 150)
+                Toggle("Useable", isOn: $landable.useable).frame(width: 150)
             }
         }
         ZStack {

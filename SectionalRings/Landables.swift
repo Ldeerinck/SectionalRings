@@ -26,8 +26,7 @@ class Landable: ObservableObject, Hashable, Identifiable, Copyable, Escapable {
     var note:String
     var errX:Double
     var errY:Double
-//    var useable: Binding<Bool>
-    var isUseable:Bool
+    var useable:Bool
     
     init(_ icao: String, _ name: String, _ sectional: String, _ lat: Double, _ lon: Double, _ elev: Int, _ length: Int, _ width: Int, _ tiffX: Double, _ tiffY: Double, _ pdfX: Double, _ pdfY: Double, _ note: String, _ errX: Double, _ errY: Double, _ useable:Bool = true) {
         self.icao = icao
@@ -45,12 +44,7 @@ class Landable: ObservableObject, Hashable, Identifiable, Copyable, Escapable {
         self.note = note
         self.errX = errX
         self.errY = errY
-        self.isUseable = useable
-//        let enabled = CurrentValueSubject<Bool, Never>(useable)
-//        self.useable = Binding<Bool>(
-//            get: { enabled.value },
-//            set: { enabled.value = $0 }
-//            )
+        self.useable = useable
     }
     
     func hash(into hasher: inout Hasher) {

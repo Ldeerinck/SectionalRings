@@ -8,69 +8,81 @@
 import SwiftUI
 
 struct AirportListView: View {
-
+    
     @EnvironmentObject var landables: Landables
-
-    //Use NavigationLink to go to detail view
-
+        
     var body: some View {
         NavigationStack {
             ScrollView {
                 Grid(alignment: .leading) {
                     GridRow {
                         HStack {
-                                
+                            
                             VStack {
                                 Text("ICAO").bold()
                                 Text("Elevation").bold()
                             }
-                            .frame(width: 80)
                             VStack{
                                 Text("Name").bold()
                                 Text("Note").bold()
                             }
-                            .frame(width: 600)
                             VStack {
                                 Text("Width").bold()
                                 Text("Length").bold()
                             }
-                            .frame(width: 80)
+                            Text("Useable").bold()
                         }
                     }
-                    ForEach(landables.landables, id: \.self) { item in
-                        NavigationLink {
-                            AirportView()
-                                .environmentObject(item)
-                        } label: {
-
-                            GridRow {
-                                //Toggle("", isOn: item.usable)
-                                HStack {
-                                    VStack {
-                                        Text(item.icao.description)
-                                        Text(item.elev.description)
+                    ForEach($landables.landables, id: \.self) { $item in
+                        HStack {
+                            NavigationLink {
+                                AirportView()
+                                    .environmentObject(item)
+                            } label: {
+                                
+                                GridRow {
+                                    //Toggle("", isOn: item.usable)
+                                    HStack {
+                                        VStack {
+                                            Text(item.icao)
+                                            Text(item.elev.description)
+                                        }
+                                        VStack {
+                                            Text(item.name)
+                                            TextField("", text: $item.note).lineLimit(nil)
+                                        }
+                                        VStack {
+                                            Text(item.width.description)
+                                            Text(item.length.description)
+                                        }
                                     }
-                                    .frame(width: 80)
-                                    VStack {
-                                        Text(item.name)
-                                        Text(item.note).lineLimit(nil)
-                                    }
-                                    .frame(width: 600)
-                                    VStack {
-                                        Text(item.width.description)
-                                        Text(item.length.description)
-                                    }
-                                    .frame(width: 80)
                                 }
                             }
+                                Toggle("", isOn: $item.useable)
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .stroke(                             item.useable ? Color.green: Color.red, lineWidth: 2)
+//                                    .onTapGesture { x in
+//                                        item.useable.toggle()
+//                                        print(item.useable)
+//                                    }
+//                            )
                         }
                         Divider()
-
+                        
                     }
                 }
             }
         }
     }
+}
+
+func isItUsable(_ landable:Landable, _ switch: inout Binding<Bool>) {
+    //        let enabled = CurrentValueSubject<Bool, Never>(useable)
+    //        self.useable = Binding<Bool>(
+    //            get: { enabled.value },
+    //            set: { enabled.value = $0 }
+    //            )
 }
 
 #Preview {

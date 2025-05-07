@@ -26,7 +26,7 @@ func drawRings(image:UIImage, globalSettings:Globals, landables:Landables) -> UI
     var step:Int = 1
     if !globalSettings.useGradients { step = 2 }
     for ringIndex in stride(from: 0, through: 4, by: step) {
-        for item in landables.landables.filter({ $0.isUseable }) {
+        for item in landables.landables.filter({ $0.useable }) {
             let point = inches2xy(left: item.tiffX, top: item.tiffY, size: image.size)
             let ring = getRing(landable: item, ringSegment: ringIndex, rings: globalSettings)
             let circle = CGRect(origin: CGPoint(x: point.x - ring.outsideRadius, y: point.y - ring.outsideRadius), size: CGSize(width: ring.outsideRadius*2, height:ring.outsideRadius*2))
