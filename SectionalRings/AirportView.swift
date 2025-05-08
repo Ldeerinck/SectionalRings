@@ -16,46 +16,58 @@ struct AirportView: View {
     var body: some View {
         VStack {
             HStack {
-                VStack(alignment: .leading) {
-                    HStack(alignment:.firstTextBaseline) {
-                        VStack {
-                            Text("ICAO").bold()
-                            Text("Elevation").bold()
-                        }
-                        VStack {
-                            Text("Name").bold()
-                            Text("Note").bold()
-                        }
-                        Text("Length").bold()
-                        Text("Note").bold()
-                        Text("Width").bold()
-                    }
+                VStack {
                     HStack {
-                        TextField("ICAO", text: $landable.icao)
-                            .frame(width: 180)
-                        TextField("Name", text: $landable.name)
-                            .frame(width: 350)
-                        TextField(
-                            "Length",
-                            value: $landable.length,
-                            formatter: nfFeet
-                        )
+                        LabeledContent {
+                            TextField("ICAO", text: $landable.icao)
+                                .frame(width: 180)
+                        } label: {
+                            Text("ICAO").bold()
+                        }
+                        .frame(width: 180)
+                        LabeledContent {
+                            TextField("Name", text: $landable.name)
+                        } label: {
+                            Text("Name").bold()
+                        }
+                        .frame(width: 350)
+                        LabeledContent {
+                            TextField(
+                                "Length",
+                                value: $landable.length,
+                                formatter: nfFeet
+                            )
+                        } label: {
+                            Text("Length").bold()
+                        }
                         .frame(width: 120)
                     }
                     HStack {
-                        TextField(
-                            "Elevation",
-                            value: $landable.elev,
-                            formatter: nfFeet
-                        )
+                        LabeledContent {
+                            TextField(
+                                "Elevation",
+                                value: $landable.elev,
+                                formatter: nfFeet
+                            )
+                        } label: {
+                            Text("Elevation").bold()
+                        }
                         .frame(width: 180)
-                        TextField("Note", text: $landable.note)
-                            .frame(width: 350)
-                        TextField(
-                            "Width",
-                            value: $landable.width,
-                            formatter: nfFeet
-                        )
+                        LabeledContent {
+                            TextField("Note", text: $landable.note)
+                        } label: {
+                            Text("Note").bold()
+                        }
+                        .frame(width: 350)
+                        LabeledContent {
+                            TextField(
+                                "Width",
+                                value: $landable.width,
+                                formatter: nfFeet
+                            )
+                        } label: {
+                            Text("Width").bold()
+                        }
                         .frame(width: 120)
                     }
                 }
