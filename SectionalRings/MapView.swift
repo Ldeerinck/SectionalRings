@@ -41,6 +41,7 @@ struct MapView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
                     }
+                    
                 
                 }
             }

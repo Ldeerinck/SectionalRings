@@ -10,7 +10,7 @@ import SwiftUI
 struct AirportView: View {
 
     @EnvironmentObject var landable: Landable
-
+    let i: UIImage = UIImage(named: "Los Angeles SEC.tif")!
     let secBit: UIImage = UIImage(named: "Sectional Bit.jpg")!
 
     var body: some View {
@@ -75,11 +75,13 @@ struct AirportView: View {
             }
         }
         ZStack {
-            Image(uiImage: secBit).resizable()
+            let spot = inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
+            let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
+            let image = i.cgImage!.cropping(to: img)!
+            Image(uiImage: UIImage(cgImage: image))
+                .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 600, height: 600)
-            Rectangle().frame(maxWidth: 1, maxHeight: 650)
-            Rectangle().frame(maxWidth: 650, maxHeight: 1)
         }
     }
 }

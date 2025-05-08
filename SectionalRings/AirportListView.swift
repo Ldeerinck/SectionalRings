@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct AirportListView: View {
-    
+
     @EnvironmentObject var landables: Landables
-        
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 Grid(alignment: .leading) {
                     GridRow {
                         HStack {
-                            
+
                             VStack {
                                 Text("ICAO").bold()
                                 Text("Elevation").bold()
                             }
-                            VStack{
+                            VStack {
                                 Text("Name").bold()
                                 Text("Note").bold()
                             }
@@ -39,18 +39,25 @@ struct AirportListView: View {
                                 AirportView()
                                     .environmentObject(item)
                             } label: {
-                                
+
                                 GridRow {
                                     //Toggle("", isOn: item.usable)
                                     HStack {
-                                        VStack {
+                                        VStack(alignment: .leading) {
                                             Text(item.icao)
                                             Text(item.elev.description)
                                         }
-                                        VStack {
+                                        .frame(width: 50)
+                                        VStack(alignment: .leading) {
                                             Text(item.name)
-                                            TextField("", text: $item.note).lineLimit(nil)
+                                            Text(item.note).lineLimit(nil)
                                         }
+                                        .frame(
+                                            minWidth: UIScreen.main.bounds
+                                                .width * 0.2,
+                                            maxWidth: UIScreen.main.bounds
+                                                .width * 0.6
+                                        )
                                         VStack {
                                             Text(item.width.description)
                                             Text(item.length.description)
@@ -58,18 +65,19 @@ struct AirportListView: View {
                                     }
                                 }
                             }
-                                Toggle("", isOn: $item.useable)
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 10)
-//                                    .stroke(                             item.useable ? Color.green: Color.red, lineWidth: 2)
-//                                    .onTapGesture { x in
-//                                        item.useable.toggle()
-//                                        print(item.useable)
-//                                    }
-//                            )
+                            Toggle("", isOn: $item.useable)
+                                .frame(alignment: .trailing)
+                            //                            .overlay(
+                            //                                RoundedRectangle(cornerRadius: 10)
+                            //                                    .stroke(                             item.useable ? Color.green: Color.red, lineWidth: 2)
+                            //                                    .onTapGesture { x in
+                            //                                        item.useable.toggle()
+                            //                                        print(item.useable)
+                            //                                    }
+                            //                            )
                         }
                         Divider()
-                        
+
                     }
                 }
             }
@@ -77,7 +85,7 @@ struct AirportListView: View {
     }
 }
 
-func isItUsable(_ landable:Landable, _ switch: inout Binding<Bool>) {
+func isItUsable(_ landable: Landable, _ switch: inout Binding<Bool>) {
     //        let enabled = CurrentValueSubject<Bool, Never>(useable)
     //        self.useable = Binding<Bool>(
     //            get: { enabled.value },

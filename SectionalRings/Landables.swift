@@ -70,7 +70,7 @@ func defaultLandables() -> [Landable] {
     var landables:[Landable] = []
     
     //Id,Location,Sectional,Lat,Lon,Elev,Length,Width,x,y,x,y,Note,,,Err x,Err y
-    landables.append(Landable("L78","Jacumba","Los-Angeles",32.6166667,116.163889,2844,25,60,44.71,35.33,44.87,35.10,"Gliderport.  Winch launch by schedule.",0.16,-0.23, true))
+    landables.append(Landable("L78","Jacumba","Los-Angeles",32.6166667,116.163889,2844,25,60,44.71,35.33,44.87,35.10,"Gliderport.  Winch launch by schedule XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.",0.16,-0.23, true))
     landables.append(Landable("OCA6","Emory Ranch","Los-Angeles",32.7475,116.02,480,24,40,45.80,34.16,45.96,33.94,"Low bushes on both sides.",0.16,-0.22, true))
     landables.append(Landable("L54","Agua Caliente","Los-Angeles",32.9558333,116.295,1220,25,60,43.68,32.21,43.84,32.20,"Closed by NOTAM.  Land near centerline.",0.16,-0.01, true))
     landables.append(Landable("KCRQ","McClellan-Palomar","Los-Angeles",33.12825,117.28,331,49,150,36.40,31.03,36.56,30.82,"Busy GA airport.  Some gliders present.",0.16,-0.21, true))
