@@ -14,13 +14,13 @@ import SwiftUI
 
 fileprivate let maxAllowedScale = 16.0
 
-struct ZoomableContainer<Content: View>: View {
-    let content: Content
+struct ZoomableContainer<Contentx: View>: View {
+    let content: Contentx
 
     @State private var currentScale: CGFloat = 1.0
     @State private var tapLocation: CGPoint = .zero
 
-    init(@ViewBuilder content: () -> Content) {
+    init(@ViewBuilder content: () -> Contentx) {
         self.content = content()
     }
 

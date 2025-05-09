@@ -16,68 +16,73 @@ struct AirportListView: View {
             ScrollView {
                 Grid(alignment: .leading) {
                     GridRow {
-                        HStack {
-
-                            VStack {
-                                Text("ICAO").bold()
-                                Text("Elevation").bold()
-                            }
-                            VStack {
-                                Text("Name").bold()
-                                Text("Note").bold()
-                            }
-                            VStack {
-                                Text("Width").bold()
-                                Text("Length").bold()
-                            }
-                            Text("Useable").bold()
+                        
+                        VStack {
+                            Text("ICAO")
+                            Text("Elevation")
                         }
+                        .frame(minWidth:90, maxWidth:90)
+                        VStack(alignment: .leading) {
+                            Text("Name")
+                            Text("Note")
+                        }
+                        .frame(minWidth:100, maxWidth:.infinity)
+                        VStack {
+                            Text("Width")
+                            Text("Length")
+                        }
+                        .frame(minWidth:90, maxWidth:90)
+                        HStack {
+                            Text("Use")
+                            Spacer().frame(width:15)
                     }
+                    }
+                    .font(.title2)
                     ForEach($landables.landables, id: \.self) { $item in
                         HStack {
                             NavigationLink {
                                 AirportView()
                                     .environmentObject(item)
                             } label: {
-
+                                
                                 GridRow {
                                     //Toggle("", isOn: item.usable)
                                     HStack {
-                                        VStack(alignment: .leading) {
+                                        VStack {
                                             Text(item.icao)
                                             Text(item.elev.description)
                                         }
-                                        .frame(width: 50)
-                                        VStack(alignment: .leading) {
-                                            Text(item.name)
-                                            Text(item.note).lineLimit(nil)
+                                        .frame(minWidth:90, maxWidth:90)
+                                        VStack {
+                                            
+                                                Text(item.name)
+                                                    .frame(maxWidth:.infinity,alignment:.topLeading)
+                                            HStack {
+                                                Text(item.note).lineLimit(nil)
+                                                    .multilineTextAlignment(.leading)
+                                                    .frame(maxWidth:.infinity,alignment:.topLeading)
+                                            }
                                         }
                                         .frame(
-                                            minWidth: UIScreen.main.bounds
-                                                .width * 0.2,
-                                            maxWidth: UIScreen.main.bounds
-                                                .width * 0.6
-                                        )
+                                             maxWidth: .infinity,
+                                             maxHeight: .infinity,
+                                             alignment: .topLeading
+                                         )
                                         VStack {
                                             Text(item.width.description)
                                             Text(item.length.description)
                                         }
+                                        .frame(minWidth:90, maxWidth:90)
                                     }
                                 }
                             }
-                            Toggle("", isOn: $item.useable)
-                                .frame(alignment: .trailing)
-                            //                            .overlay(
-                            //                                RoundedRectangle(cornerRadius: 10)
-                            //                                    .stroke(                             item.useable ? Color.green: Color.red, lineWidth: 2)
-                            //                                    .onTapGesture { x in
-                            //                                        item.useable.toggle()
-                            //                                        print(item.useable)
-                            //                                    }
-                            //                            )
+                            HStack {
+                                Toggle("", isOn: $item.useable)
+                                    .frame(minWidth:60, maxWidth:60)
+                                Spacer().frame(width:10)
+                            }
                         }
                         Divider()
-
                     }
                 }
             }

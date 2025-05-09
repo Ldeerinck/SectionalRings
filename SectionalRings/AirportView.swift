@@ -71,18 +71,34 @@ struct AirportView: View {
                         .frame(width: 120)
                     }
                 }
-                Toggle("Useable", isOn: $landable.useable).frame(width: 150)
+                VStack(alignment: .center) {
+                    Text("Useable")
+                    Toggle("", isOn: $landable.useable).frame(alignment:.center)
+                }
             }
         }
-        ZStack {
-            let spot = inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
-            let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
-            let image = i.cgImage!.cropping(to: img)!
-            Image(uiImage: UIImage(cgImage: image))
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 600, height: 600)
+        Group {
+            ZStack {
+                let spot = inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
+                let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
+                let image = i.cgImage!.cropping(to: img)!
+                
+                ZoomableContainer {
+                    Image(uiImage: UIImage(cgImage: image))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
+                Rectangle()
+                    .stroke(lineWidth: 2.0)
+                    .fill(.red)
+                    .frame(maxWidth: 1, maxHeight: .infinity)
+                Rectangle()
+                    .stroke(lineWidth: 2.0)
+                    .fill(.red)
+                    .frame(maxWidth: .infinity, maxHeight: 1)
+            }
         }
+        .border(.red)
     }
 }
 
