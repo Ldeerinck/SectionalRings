@@ -92,7 +92,7 @@ struct AirportListView: View {
                 } label: {
                         Text("Create New Landable")
                 }.simultaneousGesture(TapGesture().onEnded{
-                    landables.landables.append(Landable("", "", "", 0.0, 0.0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, "", 0.0, 0.0))
+                    landables.landables.append(Landable("", "", "", 0.0, 0.0, 0, 0, 0, 0.0, 0.0, ""))
 
                 })
             }
