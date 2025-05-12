@@ -8,36 +8,37 @@
 import SwiftUI
 
 struct AirportListView: View {
-
+    
     @EnvironmentObject var landables: Landables
-
+    
     var body: some View {
         NavigationStack {
+            HStack {
+                
+                VStack {
+                    Text("ICAO")
+                    Text("Elevation")
+                }
+                .frame(minWidth:90, maxWidth:90)
+                VStack(alignment: .leading) {
+                    Text("Name")
+                    Text("Note")
+                }
+                .frame(minWidth:100, maxWidth:.infinity)
+                VStack {
+                    Text("Width")
+                    Text("Length")
+                }
+                .frame(minWidth:90, maxWidth:90)
+                HStack {
+                    Text("Use")
+                    Spacer().frame(width:15)
+                }
+            }
+            .font(.title2)
             ScrollView {
                 Grid(alignment: .leading) {
-                    GridRow {
-                        
-                        VStack {
-                            Text("ICAO")
-                            Text("Elevation")
-                        }
-                        .frame(minWidth:90, maxWidth:90)
-                        VStack(alignment: .leading) {
-                            Text("Name")
-                            Text("Note")
-                        }
-                        .frame(minWidth:100, maxWidth:.infinity)
-                        VStack {
-                            Text("Width")
-                            Text("Length")
-                        }
-                        .frame(minWidth:90, maxWidth:90)
-                        HStack {
-                            Text("Use")
-                            Spacer().frame(width:15)
-                    }
-                    }
-                    .font(.title2)
+                    
                     ForEach($landables.landables, id: \.self) { $item in
                         HStack {
                             NavigationLink {
@@ -55,8 +56,8 @@ struct AirportListView: View {
                                         .frame(minWidth:90, maxWidth:90)
                                         VStack {
                                             
-                                                Text(item.name)
-                                                    .frame(maxWidth:.infinity,alignment:.topLeading)
+                                            Text(item.name)
+                                                .frame(maxWidth:.infinity,alignment:.topLeading)
                                             HStack {
                                                 Text(item.note).lineLimit(nil)
                                                     .multilineTextAlignment(.leading)
@@ -64,10 +65,10 @@ struct AirportListView: View {
                                             }
                                         }
                                         .frame(
-                                             maxWidth: .infinity,
-                                             maxHeight: .infinity,
-                                             alignment: .topLeading
-                                         )
+                                            maxWidth: .infinity,
+                                            maxHeight: .infinity,
+                                            alignment: .topLeading
+                                        )
                                         VStack {
                                             Text(item.width.description)
                                             Text(item.length.description)
@@ -85,6 +86,15 @@ struct AirportListView: View {
                         Divider()
                     }
                 }
+                NavigationLink {
+                    AirportView()
+                        .environmentObject(landables.landables.last!)
+                } label: {
+                        Text("Create New Landable")
+                }.simultaneousGesture(TapGesture().onEnded{
+                    landables.landables.append(Landable("", "", "", 0.0, 0.0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, "", 0.0, 0.0))
+
+                })
             }
         }
     }
