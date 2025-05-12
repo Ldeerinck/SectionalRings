@@ -79,7 +79,7 @@ struct AirportView: View {
         }
         Group {
             ZStack {
-                let spot = inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
+                let spot = CGPoint(x:landable.pixelX, y:landable.pixelY) //inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
                 let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
                 let image = i.cgImage!.cropping(to: img)!
                 
@@ -103,24 +103,7 @@ struct AirportView: View {
 }
 
 #Preview {
-    let warner = Landable(
-        "CL35",
-        "Warner Springs",
-        "Los-Angeles",
-        33.2838889,
-        116.667222,
-        2880,
-        35,
-        70,
-        40.86,
-        29.59,
-        41.02,
-        29.39,
-        "Gliderport.  Aerotows 7 days.",
-        0.16,
-        -0.20,
-        true
-    )
+    let warner = Landable("CL35","Warner Springs","Los-Angeles",33.2838889,116.667222,2880,35,70,12245.493338134676,8836.926481257557,"Gliderport.  Aerotows 7 days.")
     AirportView()
         .environmentObject(warner)
 }
