@@ -81,13 +81,15 @@ struct AirportView: View {
             ZStack {
                 let spot = CGPoint(x:landable.pixelX, y:landable.pixelY) //inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
                 let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
-                let image = i.cgImage!.cropping(to: img)!
+                let image = i.cgImage!//.cropping(to: img)!
                 
-                ZoomableContainer {
+                ScrollView([.horizontal,.vertical]){
                     Image(uiImage: UIImage(cgImage: image))
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 }
+                //need to figure out proper way to convert CGPoint to UnitPoint
+                .defaultScrollAnchor(UnitPoint(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0)))
                 Rectangle()
                     .stroke(lineWidth: 2.0)
                     .fill(.red)

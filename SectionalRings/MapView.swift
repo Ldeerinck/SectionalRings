@@ -32,14 +32,14 @@ struct MapView: View {
                         let overLayedImage = overlayImage(image: finishedImage)
                         //save file
                         saveFile(image: overLayedImage)
-                        si = UIImage(cgImage: overLayedImage.cgImage!.cropping(to:img)!)
+                        si = UIImage(cgImage: overLayedImage.cgImage!/*.cropping(to:img)!*/)
                     }
                 }
                 ZStack {
-                    ZoomableContainer {
+                    ScrollView([.horizontal,.vertical]) {
                         Image(uiImage:si).resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
+                            //.frame(width: UIScreen.main .bounds.width, height: UIScreen.main.bounds.height - 200)
                     }
                     
                 

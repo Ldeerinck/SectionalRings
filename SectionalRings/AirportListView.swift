@@ -38,7 +38,15 @@ struct AirportListView: View {
             .font(.title2)
             ScrollView {
                 Grid(alignment: .leading) {
-                    
+                    NavigationLink {
+                        AirportView()
+                            .environmentObject(landables.landables.last!)
+                    } label: {
+                            Text("Create New Landable")
+                    }.simultaneousGesture(TapGesture().onEnded{
+                        landables.landables.append(Landable("", "", "", 0.0, 0.0, 0, 0, 0, 0.0, 0.0, ""))
+
+                    })
                     ForEach($landables.landables, id: \.self) { $item in
                         HStack {
                             NavigationLink {
@@ -86,15 +94,6 @@ struct AirportListView: View {
                         Divider()
                     }
                 }
-                NavigationLink {
-                    AirportView()
-                        .environmentObject(landables.landables.last!)
-                } label: {
-                        Text("Create New Landable")
-                }.simultaneousGesture(TapGesture().onEnded{
-                    landables.landables.append(Landable("", "", "", 0.0, 0.0, 0, 0, 0, 0.0, 0.0, ""))
-
-                })
             }
         }
     }
