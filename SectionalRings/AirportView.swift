@@ -12,7 +12,7 @@ struct AirportView: View {
     @EnvironmentObject var landable: Landable
     let i: UIImage = UIImage(named: "Los Angeles SEC.tif")!
     let secBit: UIImage = UIImage(named: "Sectional Bit.jpg")!
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -78,29 +78,64 @@ struct AirportView: View {
             }
         }
         Group {
-            ZStack {
-                let spot = CGPoint(x:landable.pixelX, y:landable.pixelY) //inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
-                let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
-                let image = i.cgImage!//.cropping(to: img)!
-                
-                ScrollView([.horizontal,.vertical]){
-                    Image(uiImage: UIImage(cgImage: image))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+            GeometryReader { geo in
+                ZStack {
+                    //let spot = CGPoint(x:landable.pixelX, y:landable.pixelY) //inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
+                    //let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
+                    //let image = i.cgImage!//.cropping(to: img)!
+                    let halfWidth:CGFloat = geo.size.width / 4.0
+                    let halfHeight:CGFloat = geo.size.height / 4.0
+                    var tempSpot: CGPoint = .zero
+                    ScrollView([.horizontal,.vertical], showsIndicators: true){
+                        Image(uiImage: i)
+                        //.resizable()
+                        //.aspectRatio(contentMode: .fit)
+                        //.frame(width: i.size.width, height: i.size.height) //this line didn't change anything
+                    }
+                    .defaultScrollAnchor(UnitPoint(
+                        x: (landable.pixelX + halfWidth) / i.size.width,
+                        y: (landable.pixelY + halfHeight) / i.size.height
+                    ))
+                    .border(.orange, width:5)
+                    //use instance var point
+                    //use func scrollTo(x: CGFloat, y:CGFloat)
+                    //apple docs here: https://developer.apple.com/documentation/swiftui/scrollposition
+                    //instance var ScrollGemoetry has what we want: https://developer.apple.com/documentation/swiftui/scrollgeometry
+                    //                .onScrollGeometryChange(for: CGPoint.self) { geometry in
+                    //                    geometry.contentOffset
+                    //                } action: {oldValue, newValue in
+                    //                    print(oldValue, newValue, CGPoint(x:landable.pixelX, y:landable.pixelY))
+                    //                }
+                    .onScrollGeometryChange(for: CGRect.self) { geometry in
+                        geometry.visibleRect
+                    } action: {oldValue, newValue in
+                        print(newValue.midX, landable.pixelX, newValue.midY, landable.pixelY)
+                        tempSpot = CGPoint(x: newValue.midX, y: newValue.midY)
+                    }
+                    .onScrollGeometryChange(for: CGPoint.self) { geometry in
+                        geometry.contentOffset
+                    } action: {oldValue, newValue in
+                        print(newValue.x, newValue.y)
+                    }
+                    .onScrollPhaseChange() { _, newPhase in
+                        if newPhase == .idle {
+                            print("Airport is: \(landable.pixelX), \(landable.pixelY)")
+                            print("Center is : \(tempSpot)")
+                        }
+                    }
+                    
+                    Rectangle()
+                        .stroke(lineWidth: 2.0)
+                        .fill(.red)
+                        .frame(maxWidth: 1, maxHeight: .infinity)
+                    Rectangle()
+                        .stroke(lineWidth: 2.0)
+                        .fill(.red)
+                        .frame(maxWidth: .infinity, maxHeight: 1)
                 }
-                //need to figure out proper way to convert CGPoint to UnitPoint
-                .defaultScrollAnchor(UnitPoint(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0)))
-                Rectangle()
-                    .stroke(lineWidth: 2.0)
-                    .fill(.red)
-                    .frame(maxWidth: 1, maxHeight: .infinity)
-                Rectangle()
-                    .stroke(lineWidth: 2.0)
-                    .fill(.red)
-                    .frame(maxWidth: .infinity, maxHeight: 1)
             }
+            .border(.red)
         }
-        .border(.red)
     }
 }
 
