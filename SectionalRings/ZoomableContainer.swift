@@ -12,15 +12,16 @@ import Foundation
 
 import SwiftUI
 
-fileprivate let maxAllowedScale = 16.0
+fileprivate let maxAllowedScale = 32.0
 
 struct ZoomableContainer<Contentx: View>: View {
     let content: Contentx
 
     @State private var currentScale: CGFloat = 1.0
     @State private var tapLocation: CGPoint = .zero
+    @State private var startAt: CGPoint = .zero
 
-    init(@ViewBuilder content: () -> Contentx) {
+    init(startAt: Binding<CGPoint>, @ViewBuilder content: () -> Contentx) {
         self.content = content()
     }
 
@@ -56,7 +57,7 @@ struct ZoomableContainer<Contentx: View>: View {
             scrollView.bouncesZoom = true
             scrollView.showsHorizontalScrollIndicator = false
             scrollView.showsVerticalScrollIndicator = false
-            scrollView.clipsToBounds = false
+            scrollView.clipsToBounds = true
 
             // Create a UIHostingController to hold our SwiftUI content
             let hostedView = context.coordinator.hostingController.view!
@@ -66,6 +67,11 @@ struct ZoomableContainer<Contentx: View>: View {
             scrollView.addSubview(hostedView)
 
             return scrollView
+        }
+        
+        //Added by cjd
+        func getCenter() -> CGPoint {
+            return CGPoint.zero
         }
 
         func makeCoordinator() -> Coordinator {

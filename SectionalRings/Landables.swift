@@ -23,6 +23,13 @@ class Landable: ObservableObject, Hashable, Identifiable, Copyable, Escapable {
     //    var tiffY:Double
     var pixelX:Double
     var pixelY:Double
+    var location:CGPoint {
+        get { return CGPoint(x:pixelX, y:pixelY) }
+        set {
+            pixelX = newValue.x
+            pixelY = newValue.y
+        }
+    }
     //    var pdfX:Double
     //    var pdfY:Double
     var note:String
@@ -86,12 +93,12 @@ func defaultLandables() -> [Landable] {
     
     //Id,Location,Sectional,Lat,Lon,Elev,Length,Width,x,y,x,y,Note,,,Err x,Err y
     
-    landables.append(Landable("L78","Jacumba","Los-Angeles",32.6166667,116.163889,2844,25,60,13399.314908174289,10551.152841596131,"Gliderport.  Winch launch by schedule XXXXXXXX XXXXXXX XXXXXXX XXXXXXXXXX XXXXX XXXXX XXXXXXXXX."))
+    landables.append(Landable("L78","Jacumba","Los-Angeles",32.6166667,116.163889,2844,25,60,13399.314908174289,10551.152841596131,"Gliderport.  Winch launch by schedule."))
     landables.append(Landable("OCA6","Emory Ranch","Los-Angeles",32.7475,116.02,480,24,40,13725.981274756932,10201.737363966142,"Low bushes on both sides."))
     landables.append(Landable("L54","Agua Caliente","Los-Angeles",32.9558333,116.295,1220,25,60,13090.630176449406,9619.37823458283,"Closed by NOTAM.  Land near centerline."))
     landables.append( Landable("KCRQ","McClellan-Palomar","Los-Angeles",33.12825,117.28,331,49,150,10908.858480374505,9266.976299879081,"Busy GA airport.  Some gliders present."))
     landables.append( Landable("L08","Borrego Valley","Los-Angeles",33.2597222,116.322222,522,50,75,13015.706697875405,8890.682708585247,"Aero-retreivable"))
-    landables.append(Landable("CL35","Warner Springs","Los-Angeles",33.2838889,116.667222,2880,35,70,12245.493338134676,8836.926481257557,"Gliderport.  Aerotows 7 days."))
+    landables.append(Landable("CL35","Warner Springs","Los-Angeles",33.2838889,116.667222,2880,35,70,12245.493338134676,8836.926481257557,"Gliderport.  Aerotows 9am-5pm, 7 days per week."))
     landables.append(Landable("54CL","Lake Riverside Estates","Los-Angeles",33.5213889,116.795833,3410,35,40,11954.790241267556,8221.716324062878,"Private, but glider friendly.  Aero-retreivable."))
     landables.append(Landable("CA89","Skylark / Elsinore","Los-Angeles",33.6311111,117.300556,1262,27,100,10845.922758372344,7955.921644498187,""))
     landables.append(Landable("HMT","Hemet-Ryan","Los-Angeles",33.7338889,117.021667,1515,43,100,11454.30140439323,7657.275937122127,"Gliderport.  No local tows.  Aero-retreivable.  gliderstrip to N is 25' wide."))
