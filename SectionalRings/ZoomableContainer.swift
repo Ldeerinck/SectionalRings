@@ -16,13 +16,17 @@ fileprivate let maxAllowedScale = 32.0
 
 struct ZoomableContainer<Contentx: View>: View {
     let content: Contentx
+    let startAt: CGPoint
+    let imageSize: CGSize
 
     @State private var currentScale: CGFloat = 1.0
     @State private var tapLocation: CGPoint = .zero
-    @State private var startAt: CGPoint = .zero
 
-    init(startAt: Binding<CGPoint>, @ViewBuilder content: () -> Contentx) {
+    init(startAt: CGPoint, imageSize: CGSize, @ViewBuilder content: () -> Contentx) {
         self.content = content()
+        self.startAt = startAt
+        if startAt != .zero { currentScale = maxAllowedScale }
+        self.imageSize = imageSize
     }
 
     func doubleTapAction(location: CGPoint) {
@@ -31,10 +35,18 @@ struct ZoomableContainer<Contentx: View>: View {
     }
 
     var body: some View {
-        ZoomableScrollView(scale: $currentScale, tapLocation: $tapLocation) {
-            content
+        if startAt == .zero {
+            ZoomableScrollView(scale: $currentScale, tapLocation: $tapLocation) {
+                content
+            }
+            .onTapGesture(count: 2, perform: doubleTapAction)
+        } else {
+            ZoomableScrollView(scale: $currentScale, tapLocation: $tapLocation) {
+                content
+            }
+            .defaultScrollAnchor(UnitPoint(x: startAt.x / imageSize.width, y: startAt.y / imageSize.height))
+            .onTapGesture(count: 2, perform: doubleTapAction)
         }
-        .onTapGesture(count: 2, perform: doubleTapAction)
     }
 
     fileprivate struct ZoomableScrollView<Content: View>: UIViewRepresentable {
@@ -51,13 +63,15 @@ struct ZoomableContainer<Contentx: View>: View {
         func makeUIView(context: Context) -> UIScrollView {
             // Setup the UIScrollView
             let scrollView = UIScrollView()
-            scrollView.delegate = context.coordinator // for viewForZooming(in:)
-            scrollView.maximumZoomScale = maxAllowedScale
-            scrollView.minimumZoomScale = 1
-            scrollView.bouncesZoom = true
-            scrollView.showsHorizontalScrollIndicator = false
-            scrollView.showsVerticalScrollIndicator = false
-            scrollView.clipsToBounds = true
+
+                
+                scrollView.delegate = context.coordinator // for viewForZooming(in:)
+                scrollView.maximumZoomScale = maxAllowedScale
+                scrollView.minimumZoomScale = 1
+                scrollView.bouncesZoom = true
+                scrollView.showsHorizontalScrollIndicator = false
+                scrollView.showsVerticalScrollIndicator = false
+                scrollView.clipsToBounds = true
 
             // Create a UIHostingController to hold our SwiftUI content
             let hostedView = context.coordinator.hostingController.view!
@@ -65,8 +79,7 @@ struct ZoomableContainer<Contentx: View>: View {
             hostedView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             hostedView.frame = scrollView.bounds
             scrollView.addSubview(hostedView)
-
-            return scrollView
+                return scrollView
         }
         
         //Added by cjd

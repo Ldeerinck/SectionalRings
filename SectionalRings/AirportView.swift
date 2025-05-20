@@ -98,7 +98,7 @@ struct AirportView: View {
                     //var tempSpot: CGPoint = .zero
                     //tempSpot = CGPoint(x:landable.pixelX, y:landable.pixelY)
                     
-                    ZoomableContainer(startAt: $landable.location) {
+                    ZoomableContainer(startAt: landable.location, imageSize: i.size) {
                         Image(uiImage:i)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
