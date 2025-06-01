@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AirportView: View {
-
+    
     @EnvironmentObject var landable: Landable
     @State var imgScale: CGFloat = 1.0
     @State var lastScale: CGFloat = 1.0
@@ -20,64 +20,21 @@ struct AirportView: View {
     
     var body: some View {
         
-        let _ = print(/*self.title,*/ self.namespace, terminator: " -- ")
-        let _ = Self._printChanges()
+//        let _ = print(/*self.title,*/ self.namespace, terminator: " -- ")
+//        let _ = Self._printChanges()
         
         VStack {
             HStack {
                 VStack {
                     HStack {
-                        LabeledContent {
-                            TextField("ICAO", text: $landable.icao)
-                                .frame(width: 90)
-                        } label: {
-                            Text("ICAO").bold()
-                        }
-                        .frame(width: 180)
-                        LabeledContent {
-                            TextField("Name", text: $landable.name)
-                        } label: {
-                            Text("Name").bold()
-                        }
-                        .frame(width: 350)
-                        LabeledContent {
-                            TextField(
-                                "Length",
-                                value: $landable.length,
-                                formatter: nfFeet
-                            )
-                        } label: {
-                            Text("Length").bold()
-                        }
-                        .frame(width: 120)
+                        common(label: "ICAO", width: 90, frameWidth: 180, field: $landable.icao)
+                        common(label: "Name", width: 290, frameWidth: 350, field: $landable.name)
+                        common(label: "Length", width: 50, frameWidth: 120, field: $landable.length, formatter: nfFeet)
                     }
                     HStack {
-                        LabeledContent {
-                            TextField(
-                                "Elevation",
-                                value: $landable.elev,
-                                formatter: nfFeet
-                            )
-                        } label: {
-                            Text("Elevation").bold()
-                        }
-                        .frame(width: 180)
-                        LabeledContent {
-                            TextField("Note", text: $landable.note)
-                        } label: {
-                            Text("Note").bold()
-                        }
-                        .frame(width: 350)
-                        LabeledContent {
-                            TextField(
-                                "Width",
-                                value: $landable.width,
-                                formatter: nfFeet
-                            )
-                        } label: {
-                            Text("Width").bold()
-                        }
-                        .frame(width: 120)
+                        common(label: "Elevation", width: 90, frameWidth: 180, field: $landable.elev, formatter: nfFeet)
+                        common(label: "Note", width: 290, frameWidth: 350, field: $landable.note)
+                        common(label: "Width", width: 50, frameWidth: 120, field: $landable.width, formatter: nfFeet)
                     }
                 }
                 VStack(alignment: .center) {
@@ -86,99 +43,92 @@ struct AirportView: View {
                 }
                 .frame(width: 90)
             }
-        }
-        Group {
-            GeometryReader { geo in
-                ZStack {
-                    //let spot = CGPoint(x:landable.pixelX, y:landable.pixelY) //inches2xy(left: landable.tiffX, top: landable.tiffY, size: i.size)
-                    //let img = CGRect(x: spot.x - UIScreen.main.bounds.width / 2.0, y: spot.y - ((UIScreen.main.bounds.height - 200.0) / 2.0), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height  - 200.00)
-                    //let image = i.cgImage!//.cropping(to: img)!
-                    let halfWidth:CGFloat = geo.size.width / 4.0
-                    let halfHeight:CGFloat = geo.size.height / 4.0
-                    //var tempSpot: CGPoint = .zero
-                    //tempSpot = CGPoint(x:landable.pixelX, y:landable.pixelY)
-                    
-                    ZoomableContainer(startAt: landable.location, imageSize: i.size) {
-                        Image(uiImage:i)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    .onScrollGeometryChange(for: CGRect.self) { geometry in
-                        geometry.visibleRect
-                    } action: {oldValue, newValue in
-                        print("Mid vs Airport: ", newValue.midX, landable.pixelX, newValue.midY, landable.pixelY)
-                      tempSpot = CGPoint(x: newValue.midX, y: newValue.midY)
-                    }
-                    .onAppear() {
-//                        self.scrollTo(x: CGFloat(landable.pixelX), y: CGFloat(landable.pixelY))
-                    }
-                    
-                    
-//                    ScrollView([.horizontal,.vertical], showsIndicators: true){
-//                        Image(uiImage: i)
-//                        //.resizable()
-//                        //.aspectRatio(contentMode: .fit)
-//                       // .frame(width: i.size.width, height: i.size.height) //this line didn't change anything
-//                        .scaleEffect(imgScale)
-//                        .gesture(
-//                            MagnifyGesture()
-//                                .onChanged { magGesture in
-//                                    let delta = magGesture.magnification / self.lastScale
-//                                    self.lastScale = magGesture.magnification
-//                                    self.imgScale = self.imgScale * delta
-//                                }
-//                                .onEnded { val in
-//                                    self.lastScale = 1.0
-//                                }
-//                            )
-//                    }
-//                    
-//                
-//                    .defaultScrollAnchor(UnitPoint(
-//                        x: (landable.pixelX) / i.size.width,
-//                        y: (landable.pixelY) / i.size.height
-//                    ))
-//                    .border(.orange, width:5)
-//                    //use instance var point
-//                    //use func scrollTo(x: CGFloat, y:CGFloat)
-//                    //apple docs here: https://developer.apple.com/documentation/swiftui/scrollposition
-//                    //instance var ScrollGemoetry has what we want: https://developer.apple.com/documentation/swiftui/scrollgeometry
-//                    //                .onScrollGeometryChange(for: CGPoint.self) { geometry in
-//                    //                    geometry.contentOffset
-//                    //                } action: {oldValue, newValue in
-//                    //                    print(oldValue, newValue, CGPoint(x:landable.pixelX, y:landable.pixelY))
-//                    //                }
-//                    .onScrollGeometryChange(for: CGRect.self) { geometry in
-//                        geometry.visibleRect
-//                    } action: {oldValue, newValue in
-//                        print("Mid vs Airport: ", newValue.midX, landable.pixelX, newValue.midY, landable.pixelY)
-//                        tempSpot = CGPoint(x: newValue.midX, y: newValue.midY)
-//                    }
-//                    .onScrollGeometryChange(for: CGPoint.self) { geometry in
-//                        geometry.contentOffset
-//                    } action: {oldValue, newValue in
-//                        print("Offset : ", newValue.x, newValue.y)
-//                    }
-//                    .onScrollPhaseChange() { _, newPhase in
-//                        if newPhase == .idle {
-//                            print("Airport is: \(landable.pixelX), \(landable.pixelY)")
-//                            print("Center is : \(tempSpot)")
-//                        }
-//                    }
-                    
-                    Rectangle()
-                        .stroke(lineWidth: 2.0)
-                        .fill(.red)
-                        .frame(maxWidth: 1, maxHeight: .infinity)
-                    Rectangle()
-                        .stroke(lineWidth: 2.0)
-                        .fill(.red)
-                        .frame(maxWidth: .infinity, maxHeight: 1)
+            HStack {
+                Button {
+                    updateLocation(newLocation:CGPoint.zero)
+                } label: {
+                    Text("Update Location ")
+                        .padding(7.0)
+                        .background(Color.blue)
+                        .tint(Color.white)
+                        .clipShape(.capsule(style: .continuous))
+                }
+                Button {
+                    discardLocation()
+                } label: {
+                    Text("Discard ")
+                        .padding(7.0)
+                        .background(Color.red)
+                        .tint(Color.white)
+                        .clipShape(.capsule(style: .continuous))
                 }
             }
-            .border(.red)
+        }
+        ZStack {
+            ZoomPanView(
+                image: i,
+                minScale: 0.05,
+                maxScale: 3.0,
+                currentScale: 1.0,
+                offset: $tempSpot
+            )
+            .border(Color.purple, width:5.0)
+            Rectangle()
+                .stroke(lineWidth: 2.0)
+                .fill(.red)
+                .frame(maxWidth: 1, maxHeight: .infinity)
+            Rectangle()
+                .stroke(lineWidth: 2.0)
+                .fill(.red)
+                .frame(maxWidth: .infinity, maxHeight: 1)
+        }
+        .onAppear {
+            discardLocation()
         }
     }
+        
+    
+    //For String fields
+    func common(label:String, width:CGFloat, frameWidth:CGFloat, field:Binding<String>) -> some View {
+        LabeledContent {
+            TextField(label, text: field)
+                    .frame(width: width)
+        } label: {
+            Text(label).bold()
+                .border(Color.green)
+        }
+        .frame(width: frameWidth)
+        .border(Color.red)
+    }
+    
+    //For Int fields
+    func common(label:String, width:CGFloat, frameWidth:CGFloat, field:Binding<Int>, formatter:NumberFormatter) -> some View {
+        LabeledContent {
+            TextField(label, value: field, formatter: formatter)
+                    .frame(width: width)
+        } label: {
+            Text(label).bold()
+                .border(Color.green)
+        }
+        .frame(width: frameWidth)
+        .border(Color.red)
+    }
+    
+    func discardLocation() -> Void {
+        // Since 0,0 is the middle of the image, to find a point, start with the mid-point, and subtract the points values.
+        print("Discarding from \(tempSpot) to \(landable.location)")
+        tempSpot.x = (i.size.width / 2) - landable.location.x
+        tempSpot.y = (i.size.height / 2) - landable.location.y
+    }
+    
+    func updateLocation(newLocation: CGPoint) -> Void {
+        print("Update from \(landable.location) to \(tempSpot)")
+        // To turn the offset into a point, do the reverse.  Start with the mid-point, and subtract the offset.
+        landable.location.x = (i.size.width / 2) - tempSpot.x
+        landable.location.y = (i.size.height / 2) - tempSpot.y
+    }
+    
+
 }
 
 #Preview {

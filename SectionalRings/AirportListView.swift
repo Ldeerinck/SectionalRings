@@ -50,7 +50,7 @@ struct AirportListView: View {
                     ForEach($landables.landables, id: \.self) { $item in
                         HStack {
                             NavigationLink {
-                                AirportView()
+                                AirportView(tempSpot: item.location)
                                     .environmentObject(item)
                             } label: {
                                 
