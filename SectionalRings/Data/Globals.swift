@@ -48,7 +48,7 @@ class Globals: ObservableObject {
     @Published var lOverD:Double = 23.0 //51.5
     @Published var patternAltitude:Double = 1000.0
     @Published var pixelsPerNM:Double = 43.5 // True for LA Sectional at least
-    @Published var elevation:Double = 6000.0
+    @Published var elevation:Double = 10000.0
     @Published var useGradients = false
 }
 

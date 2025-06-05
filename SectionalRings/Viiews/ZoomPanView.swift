@@ -32,8 +32,8 @@ struct ZoomPanView: View {
                             DragGesture()
                                 .onChanged { value in
                                     if lastLocation != .zero && lastLocation != value.location {
-                                        offset.x += (value.location.x - lastLocation.x)
-                                        offset.y += (value.location.y - lastLocation.y)
+                                        offset.x += (value.location.x - lastLocation.x) * (1.0 / currentScale )
+                                        offset.y += (value.location.y - lastLocation.y) * (1.0 / currentScale )
                                         lastLocation = value.location
                                         print("Offset: \(offset)")
                                     } else {
@@ -56,6 +56,7 @@ struct ZoomPanView: View {
                                 .onEnded { _ in
                                     currentScale *= magnificationScale
                                     magnificationScale = 1.0
+                                    print("Scale: \(currentScale)")
                                 }
                         )
                     )

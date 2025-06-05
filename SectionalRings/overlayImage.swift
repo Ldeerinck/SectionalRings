@@ -30,7 +30,7 @@ func overlayImage(image: UIImage) -> UIImage{
     // Create a rect where you want the text
     let rect = CGRectMake(50, 50, 4500, 1200)
     
-    // First draw a white rectangle, so we don't see stuff between the line
+    // First draw a white rectangle, so we don't see stuff between the lines
     let ctx = UIGraphicsGetCurrentContext()!
     ctx.setFillColor(backgroundColor.cgColor)
     ctx.addRect(rect)

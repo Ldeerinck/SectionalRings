@@ -4,11 +4,12 @@
 //
 //  Created by Chuck Deerinck on 4/9/25.
 //
+//  Tweaked by Cursor on 6/4/2025
 
 import Foundation
 import SwiftUICore
 
-func lambertConformalConicAttempt(lat: Double, lon: Double, testing:Bool = false) -> (x: Double, y: Double) {
+func lambertConformalConic(lat: Double, lon: Double, testing:Bool = false) -> (x: Double, y: Double) {
     
     let φ:Double = Angle(degrees: lat).radians // Convert decimal degrees into radians
     let λ:Double = Angle(degrees: lon).radians
@@ -35,8 +36,10 @@ func lambertConformalConicAttempt(lat: Double, lon: Double, testing:Bool = false
         EF = 0 // False Easting
         NF = 0 // False Northing
         
-        e = 0.0818191910428 // For Geodetic Reference System 1980
-        a = 6371000.7900 // For Geodetic Reference System 1980
+        // Updated to use GRS 80 ellipsoid parameters
+        a = 6378137.000000 // Semi-major axis for GRS 80
+        let f = 1.0/298.257222 // Flattening for GRS 80
+        e = sqrt(2*f - f*f) // Eccentricity for GRS 80
     }
     
     let m1:Double = cos(φ1) / pow(1 - pow(e,2) * pow(sin(φ1),2), 0.5)
@@ -62,11 +65,15 @@ func lambertConformalConicAttempt(lat: Double, lon: Double, testing:Bool = false
     
     let θ:Double = n * (λ - λF)
     
-    let E = EF + r * sin(θ) //wrong answer on test due to r
-    let N = NF + rF - r * cos(θ) //wrong answer on test due to r and rF
+    let E = EF + r * sin(θ)
+    let N = NF + rF - r * cos(θ)
 
-    let x = (16645.0/2) + (E / 142) //Work on the scale values
-    let y = (12349.0/2) - (N / 159.0) //Work on the scale values
+    // Convert to US survey feet here, after the projection calculation
+    let E_feet = E * 3.280833
+    let N_feet = N * 3.280833
+
+    let x = (16580.0/2) + (E_feet / 455.74) //Was 16645 / 2
+    let y = (13120.0/2) - (N_feet / 455.74) //Was 12349 / 2
 
     if testing || true {
         print("---------------------")
@@ -155,6 +162,37 @@ func lambertConformalConicAttempt(lat: Double, lon: Double, testing:Bool = false
     Wrong        Then Easting E = 2963503.91 US survey feet  //when i force r and rF, this stays wrong
     Wrong        Northing N = 254759.80 US survey feet  //when I force r and rF, this becomes correct.
 */
+
+/*
+ ---------------------
+Check   Ellipsoid a =  6378206.4
+Check   Ellipsoid e =  0.08227185
+Check   Latitude of false origin =  0.48578330841357736
+Check   Longitude of false origin =  -1.7278759594743862
+Check   Latitude of 1st standard parallel =  0.4953826192995462
+Check   Latitude of 2nd standard parallel =  0.5285438750874385
+Check~  Easting of False Origin =  609601.219208632  or  1999999.9998171197  US survey feet
+Check   Northing at false origin =  0.0  or  0.0  US survey feet
+Check   Latitude =  0.49741883681838395
+Check   Longitude =  1.6755160819145565
+Check   m1 =  0.8804604999224146
+Check   m2 =  0.8642864151462
+Check   t =  0.5968630629230569
+Check   tF =  0.6047510070571308
+Check   t1 =  0.5982395708802095
+Check   t2 =  0.5760221243104047
+Check   n =  0.48991263017652986
+Check   F =  2.3115480734276495
+Check   r =  37565036.04628089
+Check   rF =  37807437.357812725
+Wrong   θ =  1.667364746518726
+?       Easting =  37999617.72574022  or  11582306.647536589  US survey feet
+?       Northing =  41429397.9870408  or  12627705.761989858 US survey feet
+        x(0-16645) =  886283.0621267145  y(0-12349) =  -848686.7332453902
+        (x: 886283.0621267145, y: -848686.7332453902)
+ 
+        22,830 feet per pixel, if 300dpi
+ */
 
 import Foundation
 import CoreLocation

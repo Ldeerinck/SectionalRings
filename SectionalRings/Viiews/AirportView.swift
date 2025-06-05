@@ -27,14 +27,14 @@ struct AirportView: View {
             HStack {
                 VStack {
                     HStack {
-                        common(label: "ICAO", width: 90, frameWidth: 180, field: $landable.icao)
-                        common(label: "Name", width: 290, frameWidth: 350, field: $landable.name)
-                        common(label: "Length", width: 50, frameWidth: 120, field: $landable.length, formatter: nfFeet)
+                        common(label: "ICAO", fieldWidth: 80, totalWidth: 180, field: $landable.icao)
+                        common(label: "Name", fieldWidth: 480, totalWidth: 550, field: $landable.name)
+                        common(label: "Length", fieldWidth: 50, totalWidth: 150, field: $landable.length, formatter: nfFeet)
                     }
                     HStack {
-                        common(label: "Elevation", width: 90, frameWidth: 180, field: $landable.elev, formatter: nfFeet)
-                        common(label: "Note", width: 290, frameWidth: 350, field: $landable.note)
-                        common(label: "Width", width: 50, frameWidth: 120, field: $landable.width, formatter: nfFeet)
+                        common(label: "Elevation", fieldWidth: 80, totalWidth: 180, field: $landable.elev, formatter: nfFeet)
+                        common(label: "Note", fieldWidth: 480, totalWidth: 550, field: $landable.note)
+                        common(label: "Width", fieldWidth: 50, totalWidth: 150, field: $landable.width, formatter: nfFeet)
                     }
                 }
                 VStack(alignment: .center) {
@@ -89,28 +89,28 @@ struct AirportView: View {
         
     
     //For String fields
-    func common(label:String, width:CGFloat, frameWidth:CGFloat, field:Binding<String>) -> some View {
+    func common(label:String, fieldWidth:CGFloat, totalWidth:CGFloat, field:Binding<String>) -> some View {
         LabeledContent {
             TextField(label, text: field)
-                    .frame(width: width)
+                    .frame(width: fieldWidth)
         } label: {
             Text(label).bold()
                 .border(Color.green)
         }
-        .frame(width: frameWidth)
+        .frame(width: totalWidth)
         .border(Color.red)
     }
     
     //For Int fields
-    func common(label:String, width:CGFloat, frameWidth:CGFloat, field:Binding<Int>, formatter:NumberFormatter) -> some View {
+    func common(label:String, fieldWidth:CGFloat, totalWidth:CGFloat, field:Binding<Int>, formatter:NumberFormatter) -> some View {
         LabeledContent {
             TextField(label, value: field, formatter: formatter)
-                    .frame(width: width)
+                    .frame(width: fieldWidth)
         } label: {
             Text(label).bold()
                 .border(Color.green)
         }
-        .frame(width: frameWidth)
+        .frame(width: totalWidth)
         .border(Color.red)
     }
     
